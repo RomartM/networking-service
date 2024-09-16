@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+*.so
+
+# Editors
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+*.log
+*.out
+*.err
+*.pid
+*.lock
+*.pid.lock
+*.sock
+*.sock.lock
+*.sock.pid
+
+venv/
+node_modules/

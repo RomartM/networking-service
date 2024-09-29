@@ -9,5 +9,5 @@ Features:
 
 Run Consul Server
 ```
-docker-compose up
+docker compose up
 ```

@@ -1,0 +1,6 @@
+{
+    "leave_on_terminate": true,
+    "skip_leave_on_interrupt": false,
+    "rejoin_after_leave": true,
+    "server_rejoin_age_max": "0s"
+  }

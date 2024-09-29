@@ -2,43 +2,47 @@ services:
   consul-server1:
     image: hashicorp/consul:latest
     container_name: consul-server1
-    command: agent -server -bootstrap-expect=3 -ui -client=0.0.0.0
+    command: agent -server -bootstrap-expect=3 -ui -client=0.0.0.0 -bind=0.0.0.0 -retry-join=consul-server2 -retry-join=consul-server3 -node=networking-service-1
+    environment:
+      - CONSUL_ALLOW_STALE_READS=true
+      - CONSUL_BIND_INTERFACE=eth0
+      - CONSUL_CLIENT_INTERFACE=eth0
     volumes:
-      - consul-data1:/consul/data
+      - ./consul_config:/consul/config
     ports:
       - "8500:8500"
-      - "8600:8600/udp"
     networks:
-      - consul-net1
+      - yashua-network
 
   consul-server2:
     image: hashicorp/consul:latest
     container_name: consul-server2
-    command: agent -server -retry-join=consul-server1
+    command: agent -server -bootstrap-expect=3 -ui -client=0.0.0.0 -bind=0.0.0.0 -retry-join=consul-server1 -retry-join=consul-server3 -node=networking-service-2
+    environment:
+      - CONSUL_ALLOW_STALE_READS=true
+      - CONSUL_BIND_INTERFACE=eth0
+      - CONSUL_CLIENT_INTERFACE=eth0
     volumes:
-      - consul-data2:/consul/data
+      - ./consul_config:/consul/config
     networks:
-      - consul-net1
+      - yashua-network
 
   consul-server3:
     image: hashicorp/consul:latest
     container_name: consul-server3
-    command: agent -server -retry-join=consul-server1
+    command: agent -server -bootstrap-expect=3 -ui -client=0.0.0.0 -bind=0.0.0.0 -retry-join=consul-server1 -retry-join=consul-server2 -node=networking-service-3
+    environment:
+      - CONSUL_ALLOW_STALE_READS=true
+      - CONSUL_BIND_INTERFACE=eth0
+      - CONSUL_CLIENT_INTERFACE=eth0
     volumes:
-      - consul-data3:/consul/data
+      - ./consul_config:/consul/config
     networks:
-      - consul-net1
-
-  consul-client:
-    image: hashicorp/consul:latest
-    container_name: consul-client
-    command: agent -retry-join=consul-server1
-    networks:
-      - consul-net1
+      - yashua-network
 
 networks:
-  consul-net1:
-    name: consul-net
+  yashua-network:
+    driver: bridge
     external: true
 
 volumes:
